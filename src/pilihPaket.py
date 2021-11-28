@@ -55,7 +55,7 @@ class pilihPaket(QDialog):
         cv = pilihPaket.jumlah_CV
         durasi = pilihPaket.durasi
         result_harga = ""
-        connect_db = sqlite3.connect("../db/paket.db")
+        connect_db = sqlite3.connect("paket.db")
         cursor_db = connect_db.cursor()
         cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
         try:
@@ -73,7 +73,7 @@ class pilihPaket(QDialog):
 
     def getID_Paket(self, cv, durasi):
         id = 0
-        connect_db = sqlite3.connect("../db/paket.db")
+        connect_db = sqlite3.connect("paket.db")
         cursor_db = connect_db.cursor()
         cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
         try:
@@ -103,7 +103,7 @@ class pilihPaket(QDialog):
 
     def postData(self, id_user, id_paket, jumlahCV, durasi, harga):
         try:
-            connect_db = sqlite3.connect("../db/paket.db")
+            connect_db = sqlite3.connect("paket.db")
             cursor_db = connect_db.cursor()
             # cursor_db.execute('CREATE TABLE IF NOT EXISTS "paket" ("ID_User"	INTEGER NOT NULL,"ID_Paket"	INTEGER NOT NULL,"Jumlah_CV"	INTEGER NOT NULL,"Durasi"	INTEGER NOT NULL,"Harga_Paket"	INTEGER NOT NULL,PRIMARY KEY("ID_User","ID_Paket"))')
             paket = [id_user, id_paket, jumlahCV, durasi, harga]
