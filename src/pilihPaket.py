@@ -7,7 +7,6 @@ from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, Q
 import sqlite3, random, time
 
 class pilihPaket(QDialog):
-    id_user = 1                 # untuk diintegrasikan dengan semua modul
     jumlah_CV = 0
     durasi = 0
     harga_paket = 0
@@ -33,7 +32,7 @@ class pilihPaket(QDialog):
         elif fieldCondition == "isiDurasi":
             self.error.setText("Lengkapi data jumlah CV!")
         elif fieldCondition == "complete":
-            self.postData(pilihPaket.id_user, self.getID_Paket(pilihPaket.jumlah_CV, pilihPaket.durasi), pilihPaket.jumlah_CV, pilihPaket.durasi, pilihPaket.harga_paket)
+            self.postData(pilihPaket.jumlah_CV, pilihPaket.durasi, pilihPaket.harga_paket)
             self.error.setText("")
             paketBerhasilWindow = pilihPaketBerhasil()
             widget.addWidget(paketBerhasilWindow)
@@ -55,7 +54,7 @@ class pilihPaket(QDialog):
         cv = pilihPaket.jumlah_CV
         durasi = pilihPaket.durasi
         result_harga = ""
-        connect_db = sqlite3.connect("paket.db")
+        connect_db = sqlite3.connect("database.db")
         cursor_db = connect_db.cursor()
         cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
         try:
@@ -71,21 +70,21 @@ class pilihPaket(QDialog):
 
         pilihPaket.harga_paket = result_harga
 
-    def getID_Paket(self, cv, durasi):
-        id = 0
-        connect_db = sqlite3.connect("paket.db")
-        cursor_db = connect_db.cursor()
-        cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
-        try:
-            id = cursor_db.fetchone()[0]
-        except:
-            None
-        cursor_db.close()
-        connect_db.close()
-        del cursor_db
-        del connect_db
+    # def getID_Paket(self, cv, durasi):
+    #     id = 0
+    #     connect_db = sqlite3.connect("database.db")
+    #     cursor_db = connect_db.cursor()
+    #     cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
+    #     try:
+    #         id = cursor_db.fetchone()[0]
+    #     except:
+    #         None
+    #     cursor_db.close()
+    #     connect_db.close()
+    #     del cursor_db
+    #     del connect_db
 
-        return id
+    #     return id
         
     def fieldCondition(self):
         condition = "default"
@@ -101,13 +100,26 @@ class pilihPaket(QDialog):
 
         return condition
 
-    def postData(self, id_user, id_paket, jumlahCV, durasi, harga):
+    def postData(self, jumlahCV, durasi, harga):
         try:
-            connect_db = sqlite3.connect("paket.db")
+            connect_db = sqlite3.connect("database.db")
+
             cursor_db = connect_db.cursor()
-            # cursor_db.execute('CREATE TABLE IF NOT EXISTS "paket" ("ID_User"	INTEGER NOT NULL,"ID_Paket"	INTEGER NOT NULL,"Jumlah_CV"	INTEGER NOT NULL,"Durasi"	INTEGER NOT NULL,"Harga_Paket"	INTEGER NOT NULL,PRIMARY KEY("ID_User","ID_Paket"))')
+            cursor_db.execute('SELECT * FROM Tuteers WHERE isActive = 1')
+            id_user = cursor_db.fetchone()[0]
+            cursor_db.close()
+            del cursor_db
+
+            cursor_db = connect_db.cursor()
+            cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [jumlahCV, durasi])
+            id_paket = cursor_db.fetchone()[0]
+            cursor_db.close()
+            del cursor_db
+
+            cursor_db = connect_db.cursor()
+            # cursor_db.execute('CREATE TABLE IF NOT EXISTS "Paket" ("ID"	INTEGER,"ID_User"	INTEGER NOT NULL,"ID_Paket" INTEGER NOT NULL,"Jumlah_CV"	INTEGER,"Durasi"	INTEGER,"Harga"	INTEGER),  FOREIGN KEY("ID_Paket") REFERENCES "paketTersedia"("id_paket"), FOREIGN KEY("ID_User") REFERENCES "Tuteers"("id"), PRIMARY KEY("ID" AUTOINCREMENT)')
             paket = [id_user, id_paket, jumlahCV, durasi, harga]
-            cursor_db.execute('INSERT INTO paket (ID_User, ID_Paket, Jumlah_CV, Durasi, Harga_Paket) VALUES (?,?,?,?,?)', paket)
+            cursor_db.execute('INSERT INTO Paket (ID_User, ID_Paket, Jumlah_CV, Durasi, Harga) VALUES (?,?,?,?,?)', paket)
             connect_db.commit()
             cursor_db.close()
             connect_db.close()
