@@ -44,7 +44,7 @@ class loginScreen(QDialog):
         else:
             print(username)
             print(password)
-            conn = sqlite3.connect("CView.db")
+            conn = sqlite3.connect("database.db")
             cur = conn.cursor()
             query = 'SELECT password FROM Tuteers WHERE username =\''+username+"\'"
             cur.execute(query)
@@ -77,7 +77,7 @@ class signupAccScreen(QDialog):
         elif password != confirmPassword:
             self.error.setText("Password do not match!")
         else:
-            conn = sqlite3.connect("CView.db")
+            conn = sqlite3.connect("database.db")
             cur = conn.cursor()
             user_info = [user, password]
             cur.execute('INSERT INTO Tuteers (username, password) VALUES (?,?)', user_info)

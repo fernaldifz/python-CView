@@ -120,7 +120,7 @@ color: #1D1E4E;
      <string>Order Report</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Login_3">
+   <widget class="QPushButton" name="logout">
     <property name="geometry">
      <rect>
       <x>230</x>
