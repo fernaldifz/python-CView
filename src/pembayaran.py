@@ -78,7 +78,7 @@ class modulKonfirmasiPembayaran(QDialog):
             print("jumlah uang pengguna tersedia adalah " + str(jumlahUang))
             print("jumlah harga paket adalah " + str(hargaPaket))
 
-            conn = sqlite3.connect("database.db")
+            conn = sqlite3.connect("pembayaran.db")
             cur = conn.cursor()
 
             cur.execute('CREATE TABLE IF NOT EXISTS "Pembayaran" ("ID_Pembayaran"	INTEGER NOT NULL, "Metode_Pembayaran"	TEXT NOT NULL, "Jumlah_Pembayaran"	INTEGER NOT NULL, PRIMARY KEY("ID_Pembayaran" AUTOINCREMENT))')
