@@ -69,22 +69,6 @@ class pilihPaket(QDialog):
         del connect_db
 
         pilihPaket.harga_paket = result_harga
-
-    # def getID_Paket(self, cv, durasi):
-    #     id = 0
-    #     connect_db = sqlite3.connect("database.db")
-    #     cursor_db = connect_db.cursor()
-    #     cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
-    #     try:
-    #         id = cursor_db.fetchone()[0]
-    #     except:
-    #         None
-    #     cursor_db.close()
-    #     connect_db.close()
-    #     del cursor_db
-    #     del connect_db
-
-    #     return id
         
     def fieldCondition(self):
         condition = "default"
