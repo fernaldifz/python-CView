@@ -12,6 +12,10 @@ class modulMetodePembayaran(QDialog):
     def __init__(self):
         super(modulMetodePembayaran, self).__init__()
         loadUi("metodePembayaran.ui", self)
+
+        # Set default Radio Button to checked
+        self.emoneyButton_1.setChecked(True)
+
         self.confirmButton.clicked.connect(self.gotoKonfirmasiPembayaran)
 
     def gotoKonfirmasiPembayaran(self):
