@@ -78,14 +78,19 @@ class modulKonfirmasiPembayaran(QDialog):
             print("jumlah uang pengguna tersedia adalah " + str(jumlahUang))
             print("jumlah harga paket adalah " + str(hargaPaket))
 
-            conn = sqlite3.connect("pembayaran.db")
+            conn = sqlite3.connect("database.db")
             cur = conn.cursor()
 
-            cur.execute('CREATE TABLE IF NOT EXISTS "Pembayaran" ("ID_Pembayaran"	INTEGER NOT NULL, "Metode_Pembayaran"	TEXT NOT NULL, "Jumlah_Pembayaran"	INTEGER NOT NULL, PRIMARY KEY("ID_Pembayaran" AUTOINCREMENT))')
+            cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
+            id_user = cur.fetchone()[0]
 
-            pembayaran = [metodePembayaran, hargaPaket]
+            cur.execute('CREATE TABLE IF NOT EXISTS "Pembayaran" ("ID_Pembayaran" INTEGER NOT NULL, "ID_User" INTEGER NOT NULL, "Metode_Pembayaran"	TEXT NOT NULL, "Jumlah_Pembayaran" INTEGER NOT NULL, "Status_Pembayaran" INTEGER, PRIMARY KEY("ID_Pembayaran" AUTOINCREMENT), FOREIGN KEY("ID_User") REFERENCES "Tuteers"("ID")')
+
+            statusPembayaran = 1
+            pembayaran = [id_user, metodePembayaran,
+                          hargaPaket, statusPembayaran]
             cur.execute(
-                'INSERT INTO Pembayaran (Metode_Pembayaran, Jumlah_Pembayaran) VALUES (?,?)', pembayaran)
+                'INSERT INTO Pembayaran (ID_User, Metode_Pembayaran, Jumlah_Pembayaran, Status_Pembayaran) VALUES (?,?)', pembayaran)
             conn.commit()
             conn.close()
         else:
