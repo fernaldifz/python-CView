@@ -56,6 +56,8 @@ class loginScreen(QDialog):
                 dashboard = userDashboard()
                 widget.addWidget(dashboard)
                 widget.setCurrentIndex(widget.currentIndex()+1)
+                active = 'UPDATE Tuteers SET isActive = 1'
+                cur.execute(active)
             else:
                 self.error.setText("Invalid username or password.")
 
@@ -80,8 +82,7 @@ class signupAccScreen(QDialog):
             conn = sqlite3.connect("database.db")
             cur = conn.cursor()
             user_info = [user, password]
-            cur.execute('INSERT INTO Tuteers (username, password) VALUES (?,?)', user_info)
-
+            cur.execute('INSERT INTO Tuteers (username, password, isActive) VALUES (?,?,0)', user_info)
             conn.commit()
             conn.close()
 
