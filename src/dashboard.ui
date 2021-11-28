@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>720</width>
+    <height>512</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>720</width>
+     <height>512</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QWidget#widget{
+background-color:rgb(239, 244, 209);}</string>
+   </property>
+   <widget class="QLabel" name="Login_text">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>120</y>
+      <width>411</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family: Open Sans;
+font-style: normal;
+font-weight: 800;
+font-size: 41px;
+line-height: 56px;
+/* identical to box height */
+
+color:#1D1E4E;</string>
+    </property>
+    <property name="text">
+     <string>Start your Journey</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Login">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>290</y>
+      <width>122</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: #00FF85;
+border-radius: 20px;
+font-family: Open Sans;
+font-style: normal;
+font-weight: bold;
+font-size: 14px;
+line-height: 19px;
+color: #1D1E4E;
+</string>
+    </property>
+    <property name="text">
+     <string>Order Now</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Login_text_2">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>200</y>
+      <width>501</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-family: Open Sans;
+font-style: normal;
+font-size: 18px;
+line-height: 56px;
+/* identical to box height */
+
+
+color: #1D1E4E;</string>
+    </property>
+    <property name="text">
+     <string>Lakukan pemesanan untuk meningkatkan kualitas CV kamu</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Login_2">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>460</y>
+      <width>122</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: #00FF85;
+border-radius: 20px;
+font-family: Open Sans;
+font-style: normal;
+font-weight: bold;
+font-size: 14px;
+line-height: 19px;
+color: #1D1E4E;
+</string>
+    </property>
+    <property name="text">
+     <string>Order Report</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Login_3">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>460</y>
+      <width>122</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: #FFCE31;
+border-radius: 20px;
+font-family: Open Sans;
+font-style: normal;
+font-weight: bold;
+font-size: 14px;
+line-height: 19px;
+color: #1D1E4E;
+</string>
+    </property>
+    <property name="text">
+     <string>Log Out</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
