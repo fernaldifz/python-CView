@@ -6,11 +6,12 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, QWidget
 import sqlite3, random, time
 
+import pembayaran
+
 class pilihPaket(QDialog):
     jumlah_CV = 0
     durasi = 0
     harga_paket = 0
-
     def __init__(self):
         super(pilihPaket, self).__init__()
         loadUi("pilihPaket.ui", self)
@@ -93,6 +94,7 @@ class pilihPaket(QDialog):
             id_user = cursor_db.fetchone()[0]
             cursor_db.close()
             del cursor_db
+            # id_user = 1
 
             cursor_db = connect_db.cursor()
             cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [jumlahCV, durasi])
@@ -116,11 +118,14 @@ class pilihPaketBerhasil(QDialog):
     def __init__(self):
         super(pilihPaketBerhasil, self).__init__()
         loadUi("pilihPaketBerhasil.ui", self)      
-        self.lanjutBayarButton.clicked.connect(self.pagePembayaranFunction)
-    
-    def pagePembayaranFunction(self):
-        print("Lanjut ke Pembayaran")
-        # sesuaikan dengan modul setelahnya
+        
+        self.lanjutBayarButton.clicked.connect(self.movetoPagePembayaran)
+
+    def movetoPagePembayaran(self):
+        pembayaranWindow = pembayaran.modulMetodePembayaran()
+        widget.addWidget(pembayaranWindow)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
 
 def suppress_qt_warnings():
     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
