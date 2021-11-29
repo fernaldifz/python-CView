@@ -42,24 +42,28 @@ class MainWindow(QDialog):
     def uploadfile(self):
         #file_name, _ = QFileDialog.getOpenFileName(self, 'Open Image File', r"<Default dir>", "Image files (*.jpg *.jpeg *.gif)")
     
-        conn = sqlite3.connect("upload.db")
+        conn = sqlite3.connect("database.db")
         cur = conn.cursor()
-        
+        cur.execute('SELECT * FROM Tuteers WHERE isActive = 1')
+        id_user = cur.fetchone()[0]
+
         #for image in fname:
         insertimg = self.convertimg(fname)
-        cur.execute('INSERT INTO cvupload (cvname,cvfile) VALUES (?,?)', [fname,insertimg])
+        cur.execute('INSERT INTO cvupload (ID_User,cvname,cvfile) VALUES (?,?,?)', [id_user,fname,insertimg])
 
         conn.commit()
         conn.close()
         self.notif.setText("Upload Success!")
 
     def delfile(self):
-        conn = sqlite3.connect("upload.db")
+        conn = sqlite3.connect("database.db")
         cur = conn.cursor()
+        cur.execute('SELECT * FROM Tuteers WHERE isActive = 1')
+        id_user = cur.fetchone()[0]
         
         #for image in fname:
         insertimg = self.convertimg(fname)
-        cur.execute("DELETE FROM cvupload WHERE cvname=? AND cvfile=?", [fname,insertimg])
+        cur.execute("DELETE FROM cvupload WHERE ID_User=? AND cvname=? AND cvfile=?", [id_user,fname,insertimg])
 
         conn.commit()
         conn.close()
@@ -84,6 +88,6 @@ widget=QtWidgets.QStackedWidget()
 widget.addWidget(mainwindow)
 widget.addWidget(postfile)
 widget.setFixedWidth(720)
-widget.setFixedHeight(495)
+widget.setFixedHeight(512)
 widget.show()
 sys.exit(app.exec_())
