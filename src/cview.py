@@ -407,6 +407,7 @@ class MainWindow(QDialog):
         self.downloadfile.clicked.connect(self.gotoPostFile)
         self.upload.clicked.connect(self.uploadfile)
         self.deletefile.clicked.connect(self.delfile)
+        self.gohome.clicked.connect(self.movetoDashboard)
 
     def browsefiles(self):
         global fname, _
@@ -461,7 +462,11 @@ class MainWindow(QDialog):
         conn.commit()
         conn.close()
         self.notif.setText("Delete Success!")
-
+   
+    def movetoDashboard(self):
+        dashboard = userDashboard()
+        widget.addWidget(dashboard)
+        widget.setCurrentIndex(widget.currentIndex()+1)
 
 class PostFile(QDialog):
     def __init__(self):
