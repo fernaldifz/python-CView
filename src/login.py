@@ -46,18 +46,17 @@ class loginScreen(QDialog):
             print(password)
             conn = sqlite3.connect("database.db")
             cur = conn.cursor()
-            query = 'SELECT password FROM Tuteers WHERE username =\''+username+"\'"
-            cur.execute(query)
+            cur.execute('SELECT password FROM Tuteers WHERE username =\''+username+"\'")
             result_pass = cur.fetchone()[0]
-            print(result_pass)
             if result_pass == password:
-                print("Successfully logged in.")
+                cur.execute('UPDATE Tuteers SET isActive = 1 WHERE username =\''+username+"\'")
+                conn.commit()
+                conn.close()
                 self.error.setText("")
                 dashboard = userDashboard()
                 widget.addWidget(dashboard)
                 widget.setCurrentIndex(widget.currentIndex()+1)
-                active = 'UPDATE Tuteers SET isActive = 1'
-                cur.execute(active)
+                
             else:
                 self.error.setText("Invalid username or password.")
 
@@ -113,6 +112,11 @@ class userDashboard(QDialog):
         self.logout.clicked.connect(self.gotowelscreen)
     
     def gotowelscreen(self):
+        conn = sqlite3.connect("database.db")
+        cur = conn.cursor()
+        cur.execute('UPDATE Tuteers SET isActive = 0 WHERE isActive = 1')
+        conn.commit()
+        conn.close()
         welcome = welcomeScreen()
         widget.addWidget(welcome)
         widget.setCurrentIndex(widget.currentIndex()+1)
@@ -134,4 +138,9 @@ widget.show()
 try:
     sys.exit(app.exec_())
 except:
+    conn = sqlite3.connect("database.db")
+    cur = conn.cursor()
+    cur.execute('UPDATE Tuteers SET isActive = 0 WHERE isActive = 1')
+    conn.commit()
+    conn.close()
     print("Exiting")
