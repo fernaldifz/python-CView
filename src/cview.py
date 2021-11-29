@@ -179,8 +179,12 @@ class pilihPaket(QDialog):
         self.lcdNumber.display("")
         self.error.setText("")
         print("Kembali ke Dasboard")
-        # belum kembali ke page dashboard
-        # sesuaikan dengan modul sebelumnya
+        self.backtoDasboard()
+    
+    def backtoDasboard(self):
+        dashboardWindow = userDashboard()
+        widget.addWidget(dashboardWindow)
+        widget.setCurrentIndex(widget.currentIndex()+1) 
 
     def setLCDNumber(self):
         pilihPaket.jumlah_CV = self.JumlahCVcomboBox.currentText()
@@ -410,6 +414,7 @@ class MainWindow(QDialog):
         self.downloadfile.clicked.connect(self.gotoPostFile)
         self.upload.clicked.connect(self.uploadfile)
         self.deletefile.clicked.connect(self.delfile)
+        self.gohome.clicked.connect(self.movetoDashboard)
 
     def browsefiles(self):
         global fname, _
@@ -464,7 +469,11 @@ class MainWindow(QDialog):
         conn.commit()
         conn.close()
         self.notif.setText("Delete Success!")
-
+   
+    def movetoDashboard(self):
+        dashboard = userDashboard()
+        widget.addWidget(dashboard)
+        widget.setCurrentIndex(widget.currentIndex()+1)
 
 class PostFile(QDialog):
     def __init__(self):
