@@ -179,8 +179,12 @@ class pilihPaket(QDialog):
         self.lcdNumber.display("")
         self.error.setText("")
         print("Kembali ke Dasboard")
-        # belum kembali ke page dashboard
-        # sesuaikan dengan modul sebelumnya
+        self.backtoDasboard()
+    
+    def backtoDasboard(self):
+        dashboardWindow = userDashboard()
+        widget.addWidget(dashboardWindow)
+        widget.setCurrentIndex(widget.currentIndex()+1) 
 
     def setLCDNumber(self):
         pilihPaket.jumlah_CV = self.JumlahCVcomboBox.currentText()

@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, Q
 import sqlite3
 import random
 import time
+from login import userDashboard
 
 import pembayaran
 
@@ -45,16 +46,18 @@ class pilihPaket(QDialog):
             paketBerhasilWindow = pilihPaketBerhasil()
             widget.addWidget(paketBerhasilWindow)
             widget.setCurrentIndex(widget.currentIndex()+1)
-            # tambahin post ke database
 
     def batalFunction(self):
         self.JumlahCVcomboBox.setCurrentIndex(-1)
         self.durasicomboBox.setCurrentIndex(-1)
         self.lcdNumber.display("")
         self.error.setText("")
-        print("Kembali ke Dasboard")
-        # belum kembali ke page dashboard
-        # sesuaikan dengan modul sebelumnya
+        self.backtoDasboard()
+    
+    def backtoDasboard(self):
+        dashboardWindow = userDashboard()
+        widget.addWidget(dashboardWindow)
+        widget.setCurrentIndex(widget.currentIndex()+1)   
 
     def setLCDNumber(self):
         pilihPaket.jumlah_CV = self.JumlahCVcomboBox.currentText()
