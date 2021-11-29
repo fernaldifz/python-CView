@@ -49,7 +49,7 @@ color:#1D1E4E;</string>
      <string>Start your Journey</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Login">
+   <widget class="QPushButton" name="paket">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -96,7 +96,7 @@ color: #1D1E4E;</string>
      <string>Lakukan pemesanan untuk meningkatkan kualitas CV kamu</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Login_2">
+   <widget class="QPushButton" name="report">
     <property name="geometry">
      <rect>
       <x>370</x>
