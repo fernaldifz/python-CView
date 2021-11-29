@@ -127,21 +127,21 @@ class pilihPaketBerhasil(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 
-def suppress_qt_warnings():
-    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
-    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
-    environ["QT_SCALE_FACTOR"] = "1"
+# def suppress_qt_warnings():
+#     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+#     environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+#     environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+#     environ["QT_SCALE_FACTOR"] = "1"
 
-suppress_qt_warnings()
-app = QApplication(sys.argv)
-pilihPaketWindow = pilihPaket()
-widget = QtWidgets.QStackedWidget()
-widget.addWidget(pilihPaketWindow)
-widget.setFixedHeight(512)
-widget.setFixedWidth(720)
-widget.show()
-try:
-    sys.exit(app.exec_())
-except:
-    print("Exiting")
+# suppress_qt_warnings()
+# app = QApplication(sys.argv)
+# pilihPaketWindow = pilihPaket()
+# widget = QtWidgets.QStackedWidget()
+# widget.addWidget(pilihPaketWindow)
+# widget.setFixedHeight(512)
+# widget.setFixedWidth(720)
+# widget.show()
+# try:
+#     sys.exit(app.exec_())
+# except:
+#     print("Exiting")

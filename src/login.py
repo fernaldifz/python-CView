@@ -1,8 +1,10 @@
 import sys
 from os import environ
+from PyQt5.QtCore import QDataStream
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, QWidget
+import pilihPaket
 import sqlite3
 
 class welcomeScreen(QDialog):
@@ -110,7 +112,13 @@ class userDashboard(QDialog):
         super(userDashboard, self).__init__()
         loadUi("dashboard.ui", self)
         self.logout.clicked.connect(self.gotowelscreen)
+        self.paket.clicked.connect(self.choosepaket)
     
+    def choosepaket(self):
+        paket = pilihPaket.pilihPaket()
+        widget.addWidget(paket)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
     def gotowelscreen(self):
         conn = sqlite3.connect("database.db")
         cur = conn.cursor()
