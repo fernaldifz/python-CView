@@ -80,13 +80,13 @@ class modulKonfirmasiPembayaran(QDialog):
             cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
             id_user = cur.fetchone()[0]
 
-            cur.execute('CREATE TABLE IF NOT EXISTS "Pembayaran" ("ID_Pembayaran" INTEGER NOT NULL, "ID_User" INTEGER NOT NULL, "Metode_Pembayaran"	TEXT NOT NULL, "Jumlah_Pembayaran" INTEGER NOT NULL, "Status_Pembayaran" INTEGER, PRIMARY KEY("ID_Pembayaran" AUTOINCREMENT), FOREIGN KEY("ID_User") REFERENCES "Tuteers"("ID")')
+            cur.execute('CREATE TABLE IF NOT EXISTS "Pembayaran" ("ID_Pembayaran" INTEGER NOT NULL, "ID_User" INTEGER NOT NULL, "Metode_Pembayaran"	TEXT NOT NULL, "Jumlah_Pembayaran" INTEGER NOT NULL, "Status_Pembayaran" INTEGER NOT NULL, FOREIGN KEY("ID_User") REFERENCES "Tuteers"("ID"), PRIMARY KEY("ID_Pembayaran" AUTOINCREMENT))')
 
             statusPembayaran = 1
             pembayaran = [id_user, metodePembayaran,
                           hargaPaket, statusPembayaran]
             cur.execute(
-                'INSERT INTO Pembayaran (ID_User, Metode_Pembayaran, Jumlah_Pembayaran, Status_Pembayaran) VALUES (?,?)', pembayaran)
+                'INSERT INTO Pembayaran (ID_User, Metode_Pembayaran, Jumlah_Pembayaran, Status_Pembayaran) VALUES (?,?,?,?)', pembayaran)
             conn.commit()
             conn.close()
         else:
@@ -97,11 +97,11 @@ class modulKonfirmasiPembayaran(QDialog):
             errorMessage.exec_()
 
 
-def suppress_qt_warnings():
-    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
-    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
-    environ["QT_SCALE_FACTOR"] = "1"
+# def suppress_qt_warnings():
+#    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+#    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+#   environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+#   environ["QT_SCALE_FACTOR"] = "1"
 
 
 # if __name__ == "__main__":
