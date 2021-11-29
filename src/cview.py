@@ -359,6 +359,9 @@ class modulKonfirmasiPembayaran(QDialog):
     def confirmPayment(self, jumlahCV, durasiPaket, metodePembayaran, hargaPaket):
         jumlahUang = self.lineEdit.text()
 
+        if(len(jumlahUang) == 0):
+            jumlahUang = 0
+
         if(int(jumlahUang) >= int(hargaPaket)):
             print("jumlah CV adalah " + str(jumlahCV))
             print("durasi paket adalah " + str(durasiPaket))
