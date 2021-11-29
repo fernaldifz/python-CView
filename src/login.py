@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, Q
 import pilihPaket
 import sqlite3
 
+
 class welcomeScreen(QDialog):
     def __init__(self):
         super(welcomeScreen, self).__init__()
@@ -18,11 +19,12 @@ class welcomeScreen(QDialog):
         login = loginScreen()
         widget.addWidget(login)
         widget.setCurrentIndex(widget.currentIndex()+1)
-    
+
     def gotosignup(self):
         signup = signupAccScreen()
         widget.addWidget(signup)
         widget.setCurrentIndex(widget.currentIndex()+1)
+
 
 class loginScreen(QDialog):
     def __init__(self):
@@ -31,12 +33,12 @@ class loginScreen(QDialog):
         self.input_password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.Login.clicked.connect(self.loginFunction)
         self.create.clicked.connect(self.gotosignup)
-    
+
     def gotosignup(self):
         signup = signupAccScreen()
         widget.addWidget(signup)
         widget.setCurrentIndex(widget.currentIndex()+1)
-    
+
     def loginFunction(self):
         username = self.input_username.text()
         password = self.input_password.text()
@@ -48,19 +50,22 @@ class loginScreen(QDialog):
             print(password)
             conn = sqlite3.connect("database.db")
             cur = conn.cursor()
-            cur.execute('SELECT password FROM Tuteers WHERE username =\''+username+"\'")
+            cur.execute(
+                'SELECT password FROM Tuteers WHERE username =\''+username+"\'")
             result_pass = cur.fetchone()[0]
             if result_pass == password:
-                cur.execute('UPDATE Tuteers SET isActive = 1 WHERE username =\''+username+"\'")
+                cur.execute(
+                    'UPDATE Tuteers SET isActive = 1 WHERE username =\''+username+"\'")
                 conn.commit()
                 conn.close()
                 self.error.setText("")
                 dashboard = userDashboard()
                 widget.addWidget(dashboard)
                 widget.setCurrentIndex(widget.currentIndex()+1)
-                
+
             else:
                 self.error.setText("Invalid username or password.")
+
 
 class signupAccScreen(QDialog):
     def __init__(self):
@@ -69,7 +74,7 @@ class signupAccScreen(QDialog):
         self.input_password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.input_confirm.setEchoMode(QtWidgets.QLineEdit.Password)
         self.Signup.clicked.connect(self.signupFunction)
-    
+
     def signupFunction(self):
         user = self.input_email.text()
         password = self.input_password.text()
@@ -83,7 +88,8 @@ class signupAccScreen(QDialog):
             conn = sqlite3.connect("database.db")
             cur = conn.cursor()
             user_info = [user, password]
-            cur.execute('INSERT INTO Tuteers (username, password, isActive) VALUES (?,?,0)', user_info)
+            cur.execute(
+                'INSERT INTO Tuteers (username, password, isActive) VALUES (?,?,0)', user_info)
             conn.commit()
             conn.close()
 
@@ -95,17 +101,16 @@ class signupAccScreen(QDialog):
             widget.addWidget(login)
             widget.setCurrentIndex(widget.currentIndex()+1)
 
-class fillProfileScreen(QDialog):
     def __init__(self):
         super(fillProfileScreen, self).__init__()
-        loadUi("fillprofile.ui",self)
+        loadUi("fillprofile.ui", self)
         self.skip.clicked.connect(self.gotologin)
-    
+
     def gotologin(self):
         login = loginScreen()
         widget.addWidget(login)
         widget.setCurrentIndex(widget.currentIndex()+1)
-        
+
 
 class userDashboard(QDialog):
     def __init__(self):
@@ -113,7 +118,7 @@ class userDashboard(QDialog):
         loadUi("dashboard.ui", self)
         self.logout.clicked.connect(self.gotowelscreen)
         self.paket.clicked.connect(self.choosepaket)
-    
+
     def choosepaket(self):
         paket = pilihPaket.pilihPaket()
         widget.addWidget(paket)
@@ -129,11 +134,13 @@ class userDashboard(QDialog):
         widget.addWidget(welcome)
         widget.setCurrentIndex(widget.currentIndex()+1)
 
+
 def suppress_qt_warnings():
     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
     environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     environ["QT_SCREEN_SCALE_FACTORS"] = "1"
     environ["QT_SCALE_FACTOR"] = "1"
+
 
 suppress_qt_warnings()
 app = QApplication(sys.argv)

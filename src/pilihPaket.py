@@ -4,24 +4,30 @@ from os import environ
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, QWidget
-import sqlite3, random, time
+import sqlite3
+import random
+import time
 
 import pembayaran
+
 
 class pilihPaket(QDialog):
     jumlah_CV = 0
     durasi = 0
     harga_paket = 0
+
     def __init__(self):
         super(pilihPaket, self).__init__()
         loadUi("pilihPaket.ui", self)
         self.JumlahCVcomboBox.setCurrentIndex(-1)
         self.durasicomboBox.setCurrentIndex(-1)
-        self.lcdNumber.display("")        
+        self.lcdNumber.display("")
         self.konfirmasiButton.clicked.connect(self.konfirmasiFunction)
         self.batalButton.clicked.connect(self.batalFunction)
-        (self.JumlahCVcomboBox.currentIndexChanged and self.durasicomboBox.currentIndexChanged).connect(self.setLCDNumber)
-        (self.durasicomboBox.currentIndexChanged and self.JumlahCVcomboBox.currentIndexChanged).connect(self.setLCDNumber)
+        (self.JumlahCVcomboBox.currentIndexChanged and self.durasicomboBox.currentIndexChanged).connect(
+            self.setLCDNumber)
+        (self.durasicomboBox.currentIndexChanged and self.JumlahCVcomboBox.currentIndexChanged).connect(
+            self.setLCDNumber)
 
     def konfirmasiFunction(self):
         fieldCondition = self.fieldCondition()
@@ -33,14 +39,15 @@ class pilihPaket(QDialog):
         elif fieldCondition == "isiDurasi":
             self.error.setText("Lengkapi data jumlah CV!")
         elif fieldCondition == "complete":
-            self.postData(pilihPaket.jumlah_CV, pilihPaket.durasi, pilihPaket.harga_paket)
+            self.postData(pilihPaket.jumlah_CV,
+                          pilihPaket.durasi, pilihPaket.harga_paket)
             self.error.setText("")
             paketBerhasilWindow = pilihPaketBerhasil()
             widget.addWidget(paketBerhasilWindow)
             widget.setCurrentIndex(widget.currentIndex()+1)
-            # tambahin post ke database  
-        
-    def batalFunction(self):      
+            # tambahin post ke database
+
+    def batalFunction(self):
         self.JumlahCVcomboBox.setCurrentIndex(-1)
         self.durasicomboBox.setCurrentIndex(-1)
         self.lcdNumber.display("")
@@ -57,12 +64,13 @@ class pilihPaket(QDialog):
         result_harga = ""
         connect_db = sqlite3.connect("database.db")
         cursor_db = connect_db.cursor()
-        cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
+        cursor_db.execute(
+            'SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [cv, durasi])
         try:
             result_harga = cursor_db.fetchone()[3]
         except:
             None
-        self.lcdNumber.display(result_harga)  
+        self.lcdNumber.display(result_harga)
 
         cursor_db.close()
         connect_db.close()
@@ -70,7 +78,7 @@ class pilihPaket(QDialog):
         del connect_db
 
         pilihPaket.harga_paket = result_harga
-        
+
     def fieldCondition(self):
         condition = "default"
         index_cv = self.JumlahCVcomboBox.currentIndex()
@@ -97,7 +105,8 @@ class pilihPaket(QDialog):
             # id_user = 1
 
             cursor_db = connect_db.cursor()
-            cursor_db.execute('SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [jumlahCV, durasi])
+            cursor_db.execute(
+                'SELECT * FROM paketTersedia WHERE jumlah_CV =? AND durasi =?', [jumlahCV, durasi])
             id_paket = cursor_db.fetchone()[0]
             cursor_db.close()
             del cursor_db
@@ -105,7 +114,8 @@ class pilihPaket(QDialog):
             cursor_db = connect_db.cursor()
             # cursor_db.execute('CREATE TABLE IF NOT EXISTS "Paket" ("ID"	INTEGER,"ID_User"	INTEGER NOT NULL,"ID_Paket" INTEGER NOT NULL,"Jumlah_CV"	INTEGER,"Durasi"	INTEGER,"Harga"	INTEGER),  FOREIGN KEY("ID_Paket") REFERENCES "paketTersedia"("id_paket"), FOREIGN KEY("ID_User") REFERENCES "Tuteers"("id"), PRIMARY KEY("ID" AUTOINCREMENT)')
             paket = [id_user, id_paket, jumlahCV, durasi, harga]
-            cursor_db.execute('INSERT INTO Paket (ID_User, ID_Paket, Jumlah_CV, Durasi, Harga) VALUES (?,?,?,?,?)', paket)
+            cursor_db.execute(
+                'INSERT INTO Paket (ID_User, ID_Paket, Jumlah_CV, Durasi, Harga) VALUES (?,?,?,?,?)', paket)
             connect_db.commit()
             cursor_db.close()
             connect_db.close()
@@ -114,11 +124,12 @@ class pilihPaket(QDialog):
         except sqlite3.OperationalError:
             time.sleep(random.randint())
 
+
 class pilihPaketBerhasil(QDialog):
     def __init__(self):
         super(pilihPaketBerhasil, self).__init__()
-        loadUi("pilihPaketBerhasil.ui", self)      
-        
+        loadUi("pilihPaketBerhasil.ui", self)
+
         self.lanjutBayarButton.clicked.connect(self.movetoPagePembayaran)
 
     def movetoPagePembayaran(self):
@@ -127,21 +138,22 @@ class pilihPaketBerhasil(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 
-# def suppress_qt_warnings():
-#     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
-#     environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-#     environ["QT_SCREEN_SCALE_FACTORS"] = "1"
-#     environ["QT_SCALE_FACTOR"] = "1"
+def suppress_qt_warnings():
+    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+    environ["QT_SCALE_FACTOR"] = "1"
 
-# suppress_qt_warnings()
-# app = QApplication(sys.argv)
-# pilihPaketWindow = pilihPaket()
-# widget = QtWidgets.QStackedWidget()
-# widget.addWidget(pilihPaketWindow)
-# widget.setFixedHeight(512)
-# widget.setFixedWidth(720)
-# widget.show()
-# try:
-#     sys.exit(app.exec_())
-# except:
-#     print("Exiting")
+
+suppress_qt_warnings()
+app = QApplication(sys.argv)
+pilihPaketWindow = pilihPaket()
+widget = QtWidgets.QStackedWidget()
+widget.addWidget(pilihPaketWindow)
+widget.setFixedHeight(512)
+widget.setFixedWidth(720)
+widget.show()
+try:
+    sys.exit(app.exec_())
+except:
+    print("Exiting")

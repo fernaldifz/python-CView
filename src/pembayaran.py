@@ -8,7 +8,7 @@ import sqlite3
 
 class modulMetodePembayaran(QDialog):
     paymentMethodSelected = "*"
-    
+
     def __init__(self):
         super(modulMetodePembayaran, self).__init__()
         loadUi("metodePembayaran.ui", self)
@@ -40,8 +40,10 @@ class modulMetodePembayaran(QDialog):
         widget.addWidget(konfirmasiPembayaranWindow)
         widget.setCurrentIndex(widget.currentIndex()+1)
 
+
 class modulKonfirmasiPembayaran(QDialog):
     id_user = 0
+
     def __init__(self):
         super(modulKonfirmasiPembayaran, self).__init__()
         loadUi("konfirmasiPembayaran.ui", self)
@@ -55,11 +57,13 @@ class modulKonfirmasiPembayaran(QDialog):
         del cur
 
         cur = conn.cursor()
-        cur.execute('SELECT * FROM Paket WHERE ID = ?', (id_user,))
+        cur.execute(
+            'SELECT * FROM Paket WHERE ID = ? ORDER BY ID DESC', (id_user,))
+        # cur.execute('SELECT * FROM Paket WHERE ID = ?', (id_user,))
         jumlahCV = cur.fetchone()[3]
         conn.commit()
         del cur
-        # Setup variables
+
         cur = conn.cursor()
         cur.execute('SELECT * FROM Paket WHERE ID = ?', (id_user,))
         durasiPaket = cur.fetchone()[4]
@@ -70,7 +74,7 @@ class modulKonfirmasiPembayaran(QDialog):
         cur.execute('SELECT * FROM Paket WHERE ID = ?', (id_user,))
         hargaPaket = cur.fetchone()[5]
         conn.commit()
-        
+
         conn.close()
         del cur
         del conn
