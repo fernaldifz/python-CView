@@ -4,6 +4,7 @@ from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, QWidget, QMessageBox
 import sqlite3
+from pilihPaket import pilihPaket
 
 
 class modulMetodePembayaran(QDialog):
@@ -12,8 +13,6 @@ class modulMetodePembayaran(QDialog):
     def __init__(self):
         super(modulMetodePembayaran, self).__init__()
         loadUi("metodePembayaran.ui", self)
-
-        # Set default Radio Button to checked
         self.emoneyButton_1.setChecked(True)
 
         self.confirmButton.clicked.connect(self.gotoKonfirmasiPembayaran)
@@ -49,16 +48,14 @@ class modulKonfirmasiPembayaran(QDialog):
         loadUi("konfirmasiPembayaran.ui", self)
 
         # Setup variables
-        jumlahCV = 3
-        durasiPaket = 3
+        jumlahCV = pilihPaket.jumlah_CV
+        durasiPaket = pilihPaket.durasi
         metodePembayaran = modulMetodePembayaran.paymentMethodSelected
-        hargaPaket = 70000
+        hargaPaket = pilihPaket.harga_paket
 
-        # Make lineEdit only accept int numbers
         validator = QtGui.QIntValidator()
         self.lineEdit.setValidator(validator)
 
-        # Show available information
         self.label_6.setText("Jumlah CV adalah " + str(jumlahCV) +
                              " dengan durasi " + str(durasiPaket) + " hari")
         self.label_7.setText(metodePembayaran)
@@ -70,7 +67,6 @@ class modulKonfirmasiPembayaran(QDialog):
     def confirmPayment(self, jumlahCV, durasiPaket, metodePembayaran, hargaPaket):
         jumlahUang = self.lineEdit.text()
 
-        # Check if user can pay for packet
         if(int(jumlahUang) >= int(hargaPaket)):
             print("jumlah CV adalah " + str(jumlahCV))
             print("durasi paket adalah " + str(durasiPaket))
@@ -108,17 +104,17 @@ def suppress_qt_warnings():
     environ["QT_SCALE_FACTOR"] = "1"
 
 
-if __name__ == "__main__":
-    suppress_qt_warnings()
-    app = QApplication(sys.argv)
-    metodePembayaranWindow = modulMetodePembayaran()
-    widget = QtWidgets.QStackedWidget()
-    widget.addWidget(metodePembayaranWindow)
+# if __name__ == "__main__":
+#    suppress_qt_warnings()
+#    app = QApplication(sys.argv)
+#    metodePembayaranWindow = modulMetodePembayaran()
+#    widget = QtWidgets.QStackedWidget()
+#    widget.addWidget(metodePembayaranWindow)
 
-    widget.setFixedHeight(512)
-    widget.setFixedWidth(720)
-    widget.show()
-    try:
-        sys.exit(app.exec_())
-    except:
-        print("Exiting")
+#    widget.setFixedHeight(512)
+#    widget.setFixedWidth(720)
+#    widget.show()
+#    try:
+#        sys.exit(app.exec_())
+#    except:
+#        print("Exiting")
