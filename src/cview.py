@@ -1,10 +1,11 @@
 from sqlite3.dbapi2 import connect
 import sys
-from os import environ
+from os import curdir, environ
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog, QApplication, QStackedWidget, QTabWidget, QWidget, QMessageBox, QPushButton, QFileDialog, QVBoxLayout
+from datetime import date, datetime
 import sqlite3
 import random
 import time
@@ -504,18 +505,20 @@ class PostFile(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 class laporanPemesanan(QDialog):
+
     def __init__(self):
         super(laporanPemesanan, self).__init__()
         loadUi("laporanPemesanan.ui", self)
-        self.Home.clicked.connect(self.movetoPagePembayaran)
+        self.Home.clicked.connect(self.movetoDashboard)
         self.detailPaket.clicked.connect(self.gotopaket)
         self.detailBayar.clicked.connect(self.gotobayar)
         self.detailCV.clicked.connect(self.gotocv)
         self.tabelPemesanan.setColumnWidth(0, 50)
         self.tabelPemesanan.setColumnWidth(1, 100)
-        # self.loadData()
+        self.postData()
+        self.loadData()
 
-    def movetoPagePembayaran(self):
+    def movetoDashboard(self):
         dashboard = userDashboard()
         widget.addWidget(dashboard)
         widget.setCurrentIndex(widget.currentIndex()+1)
@@ -532,48 +535,142 @@ class laporanPemesanan(QDialog):
         widget.addWidget(cv)
         widget.setCurrentIndex(widget.currentIndex()+1)
 
-    # def loadData(self):
-    #     conn = sqlite3.connect("CView.db")
-    #     cur = conn.cursor()
-    #     query = "SELECT * FROM 'Order' LIMIT 5"
+    def postData(self):
+        conn = sqlite3.connect("database.db")
 
-    #     tableRow = 0
-    #     for row in cur.execute(query):
-    #         self.tabelPemesanan.setItem(tableRow, 1, QtWidgets.QTablelWidgetItem(row[0]))
-    #         self.tabelPemesanan.setItem(tableRow, 2, QtWidgets.QTablelWidgetItem(row[1]))
-    #         tableRow += 1
+        cur = conn.cursor()
+        cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
+        id_user = cur.fetchone()[0]
+        conn.commit()
+        del cur
+
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Paket WHERE ID_User = ? ORDER BY ID DESC LIMIT 1', (id_user,))
+        id_paket = cur.fetchone()[2]
+        conn.commit()
+        del cur
+
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM cvupload WHERE ID_User = ? ORDER BY cvid DESC LIMIT 1', (id_user,))
+        id_cv = cur.fetchone()[0]
+        conn.commit()
+        del cur
+
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Pembayaran WHERE ID_User = ? ORDER BY ID_Pembayaran DESC LIMIT 1', (id_user,))
+        id_pembayaran = cur.fetchone()[0]
+        conn.commit()
+
+        # tanggal_pesan = datetime.today().strftime('%d/%m/%Y')
+
+        pemesanan = [id_user, id_paket, id_cv, id_pembayaran]
+        cur = conn.cursor()
+        cur.execute('INSERT INTO Pemesanan (ID_Tuteers, ID_Paket, ID_CV, ID_Pembayaran) VALUES (?,?,?,?)', pemesanan)
+        conn.commit()
+
+        conn.close()
+        del cur
+        del conn
+
+
+    def loadData(self):
+        # conn = sqlite3.connect("database.db")
+
+        # cur = conn.cursor()
+        # cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
+        # id_user = cur.fetchone()[0]
+        # conn.commit()
+        # del cur
+
+        # cur = conn.cursor()
+        # cur.execute(
+        #     'SELECT * FROM Pemesanan WHERE ID_Tuteers = ? ORDER BY ID DESC LIMIT 1', (id_user,))
+        # tanggal = cur.fetchone()[5]
+        # conn.commit()
+        # conn.close()
+        # del cur
+
+        tanggal = datetime.today().strftime('%d/%m/%Y')
+        
+        # self.tabelPemesanan.setItem(0, 1, tanggal)
+        self.tabelPemesanan.item(0, 1).setText(tanggal)
+
+        # cur = conn.cursor()
+        # query = "SELECT * FROM PEMESANAN LIMIT 5"
+        # cur.execute(query)
+        # tanggal = cur.fetchone()[5]
+
+        # tableRow = 0
+        # for row in cur.execute(query):
+        #     self.tabelPemesanan.setItem(tableRow, 1, QWidget.QTablelWidgetItem(row[0]))
+        #     self.tabelPemesanan.setItem(tableRow, 2, QWidget.QTablelWidgetItem(row[1]))
+        #     tableRow += 1
+
+        # conn.commit()
+        # conn.close()
 
 class detailPaket(QDialog):
     def __init__(self):
         super(detailPaket, self).__init__()
         loadUi("detailPaket.ui", self)
         self.Back.clicked.connect(self.gotoback)
-        conn = sqlite3.connect("CView.db")
+        conn = sqlite3.connect("database.db")
+
         cur = conn.cursor()
-        qdate = 'SELECT "Order"."Tanggal Pemesanan" FROM "Order", Pembayaran as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qdate)
-        date = cur.fetchone()[0]
+        cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
+        id_user = cur.fetchone()[0]
+        conn.commit()
+        del cur
+
+        # cur = conn.cursor()
+        # cur.execute('SELECT * FROM Pembayaran WHERE ID_User = ? ORDER BY ID DESC LIMIT 1', (id_user,))
+        # date = cur.fetchone()[5]
+        # conn.commit()
+        # del cur
+        date = datetime.today().strftime('%d/%m/%Y')
         self.LTanggal.setText(date)
 
-        qpaket = 'SELECT P.ID FROM "Order", Paket as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qpaket)
-        paket = cur.fetchone()[0]
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Paket WHERE ID_User = ? ORDER BY ID DESC LIMIT 1', (id_user,))
+        paket = cur.fetchone()[2]
+        conn.commit()
+        del cur
+
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Paket WHERE ID_User = ? ORDER BY ID DESC LIMIT 1', (id_user,))
+        cv = cur.fetchone()[3]
+        conn.commit()
+        del cur
+
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Paket WHERE ID_User = ? ORDER BY ID DESC LIMIT 1', (id_user,))
+        durasi = cur.fetchone()[4]
+        conn.commit()
+        del cur
+
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Paket WHERE ID_User = ? ORDER BY ID DESC LIMIT 1', (id_user,))
+        harga = cur.fetchone()[5]
+        conn.commit()
+
+        conn.close()
+        del cur
+        del conn
+
         self.LPaket.setText("Paket " + str(paket))
 
-        qdurasi = 'SELECT P.Durasi FROM "Order", Paket as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qdurasi)
-        durasi = cur.fetchone()[0]
         self.LDurasi.setText(str(durasi) + " Hari")
 
-        qCV = 'SELECT P.Jumlah_CV FROM "Order", Paket as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qCV)
-        CV = cur.fetchone()[0]
-        self.LJumlah.setText(str(CV))
+        self.LJumlah.setText(str(cv))
 
-        qharga = 'SELECT P.Harga FROM "Order", Paket as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qharga)
-        harga = cur.fetchone()[0]
-        self.LHarga.setText("Rp " + str(harga))
+        self.LHarga.setText("Rp. " + str(harga))
 
     def gotoback(self):  
         Order = laporanPemesanan()
