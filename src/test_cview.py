@@ -3,7 +3,6 @@ from sqlite3.dbapi2 import connect
 from PyQt5.QtCore import *
 import pytest
 import unittest
-# from time import sleep
 import cview
 import sqlite3
 
@@ -124,24 +123,15 @@ def test_dashboard_beforePilihPaket(qtbot):
     assert dashboard.error.text() == "Order first to look your order report!"
     qtbot.mouseClick(dashboard.logout, Qt.LeftButton)
 
-# def test_laporanPemesanan(qtbot):
-
 def test_paket_fieldNotFilled1(qtbot):
     paket = cview.pilihPaket()
     qtbot.addWidget(paket)
-    # paket.JumlahCVcomboBox.clear()
-    # paket.durasicomboBox.clear()
-    # qtbot.keyClicks(paket.JumlahCVcomboBox, 1)
-    # qtbot.keyClicks(paket.durasicomboBox, 3)
     qtbot.mouseClick(paket.konfirmasiButton, Qt.LeftButton)
     assert paket.error.text() == "Lengkapi seluruh data!"
 
 def test_paket_fieldNotFilled2(qtbot):
     paket = cview.pilihPaket()
     qtbot.addWidget(paket)
-    # paket.JumlahCVcomboBox.clear()
-    # paket.durasicomboBox.clear()
-    # qtbot.keyClicks(paket.JumlahCVcomboBox, 1)
     durasi = "3"
     qtbot.keyClicks(paket.durasicomboBox, durasi)
     qtbot.mouseClick(paket.konfirmasiButton, Qt.LeftButton)
@@ -150,11 +140,8 @@ def test_paket_fieldNotFilled2(qtbot):
 def test_paket_fieldNotFilled3(qtbot):
     paket = cview.pilihPaket()
     qtbot.addWidget(paket)
-    # paket.JumlahCVcomboBox.clear()
-    # paket.durasicomboBox.clear()
     cv = "1"
     qtbot.keyClicks(paket.JumlahCVcomboBox, cv)
-    # qtbot.keyClicks(paket.durasicomboBox, 3)
     qtbot.mouseClick(paket.konfirmasiButton, Qt.LeftButton)
     assert paket.error.text() == "Lengkapi data durasi!"
 
