@@ -162,6 +162,7 @@ def test_paket_success(qtbot):
     qtbot.keyClicks(paket.durasicomboBox, durasi)
     paket.postData(cv, durasi, harga)
     qtbot.mouseClick(paket.konfirmasiButton, Qt.LeftButton)
+    # dilakukan karena tidak mengetahui syntax yang tepat di PyTest untuk upload ComboBox Button supaya berhasil terupload datanya ke database
 
 def test_paket_back_to_dashboard(qtbot):
     batalPaket = cview.pilihPaket()
