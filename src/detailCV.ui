@@ -279,7 +279,7 @@ line-height: 39px;
 color: #FFCE31;</string>
     </property>
     <property name="text">
-     <string>asd</string>
+     <string>Belum direview</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_13">

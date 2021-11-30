@@ -121,12 +121,27 @@ class userDashboard(QDialog):
         loadUi("dashboard.ui", self)
         self.logout.clicked.connect(self.gotowelscreen)
         self.paket.clicked.connect(self.choosepaket)
-        self.report.clicked.connect(self.movetoorderreport)
+        self.report.clicked.connect(self.movetoorderreport)            
 
     def movetoorderreport(self):
-        report = laporanPemesanan()
-        widget.addWidget(report)
-        widget.setCurrentIndex(widget.currentIndex()+1)
+        conn = sqlite3.connect("database.db")
+
+        cur = conn.cursor()
+        cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
+        id_user = cur.fetchone()[0]
+        del cur
+
+        cur = conn.cursor()
+        cur.execute(
+            'select count(id) from paket where id_user = ?', (id_user,))
+        countOrder = cur.fetchone()[0]
+
+        if countOrder == 0:
+            self.error.setText("Order first to look your order report!")
+        else:
+            report = laporanPemesanan()
+            widget.addWidget(report)
+            widget.setCurrentIndex(widget.currentIndex()+1)
 
     def choosepaket(self):
         paket = pilihPaket()
@@ -682,22 +697,24 @@ class detailCV(QDialog):
         super(detailCV, self).__init__()
         loadUi("detailCV.ui", self)
         self.Back.clicked.connect(self.gotoback)
-        conn = sqlite3.connect("CView.db")
+        conn = sqlite3.connect("database.db")
         cur = conn.cursor()
-        qdate = 'SELECT "Order"."Tanggal Pemesanan" FROM "Order", CV  WHERE CV.ID_Order = "Order".ID'
-        cur.execute(qdate)
-        date = cur.fetchone()[0]
+        cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
+        id_user = cur.fetchone()[0]
+        conn.commit()
+        del cur
+
+        date = datetime.today().strftime('%d/%m/%Y')
         self.LTanggal.setText(date)
 
-        qCV = 'SELECT CV.Jumlah_CV FROM "Order", CV  WHERE CV.ID_Order = "Order".ID'
-        cur.execute(qCV)
-        CV = cur.fetchone()[0]
-        self.LCV.setText(str(CV))
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Paket WHERE ID_User = ? ORDER BY id DESC LIMIT 1', (id_user,))
+        cv = cur.fetchone()[3]
+        conn.commit()
+        del cur
 
-        qStatus = 'SELECT CV.Status FROM "Order", CV  WHERE CV.ID_Order = "Order".ID'
-        cur.execute(qStatus)
-        Status = cur.fetchone()[0]
-        self.LStatus.setText(Status)
+        self.LCV.setText(str(cv))
 
     def gotoback(self):  
         Order = laporanPemesanan()
@@ -709,27 +726,34 @@ class detailBayar(QDialog):
         super(detailBayar, self).__init__()
         loadUi("detailBayar.ui", self)
         self.Back.clicked.connect(self.gotoback)
-        conn = sqlite3.connect("CView.db")
+        conn = sqlite3.connect("database.db")
         cur = conn.cursor()
-        qdate = 'SELECT "Order"."Tanggal Pemesanan" FROM "Order", Pembayaran as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qdate)
-        date = cur.fetchone()[0]
+        cur.execute('SELECT id FROM Tuteers WHERE isActive = 1')
+        id_user = cur.fetchone()[0]
+        conn.commit()
+        del cur
+
+        date = datetime.today().strftime('%d/%m/%Y')
         self.LTanggal.setText(date)
 
-        qmethod = 'SELECT P.Metode FROM "Order", Pembayaran as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qmethod)
-        method = cur.fetchone()[0]
-        self.LMetode.setText(method)
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Pembayaran WHERE ID_User = ? ORDER BY ID_Pembayaran DESC LIMIT 1', (id_user,))
+        metode = cur.fetchone()[2]
+        conn.commit()
+        del cur
 
-        qbayar = 'SELECT P.Total_Bayar FROM "Order", Pembayaran as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qbayar)
-        bayar = cur.fetchone()[0]
-        self.LBayar.setText("Rp " + str(bayar))
+        self.LMetode.setText(metode)
 
-        qstatus = 'SELECT P.Status FROM "Order", Pembayaran as P  WHERE P.ID_Order = "Order".ID'
-        cur.execute(qstatus)
-        status = cur.fetchone()[0]
-        self.LStatus.setText(status)
+        cur = conn.cursor()
+        cur.execute(
+            'SELECT * FROM Pembayaran WHERE ID_User = ? ORDER BY ID_Pembayaran DESC LIMIT 1', (id_user,))
+        terbayar = cur.fetchone()[3]
+        conn.commit()
+        del cur
+
+        self.LBayar.setText("Rp. " + str(terbayar))
+
 
     def gotoback(self):  
         Order = laporanPemesanan()
