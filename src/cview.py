@@ -160,8 +160,8 @@ class userDashboard(QDialog):
 
 
 class pilihPaket(QDialog):
-    jumlah_CV = 0
-    durasi = 0
+    jumlah_CV = '*'
+    durasi = '*'
     harga_paket = 0
 
     def __init__(self):
@@ -374,8 +374,8 @@ class modulKonfirmasiPembayaran(QDialog):
         validator = QtGui.QIntValidator()
         self.lineEdit.setValidator(validator)
 
-        self.label_6.setText("Jumlah CV adalah " + str(jumlahCV) +
-                             " dengan durasi " + str(durasiPaket) + " hari")
+        self.label_6.setText("Jumlah CV adalah " + jumlahCV +
+                             " dengan durasi " + durasiPaket + " hari")
         self.label_7.setText(metodePembayaran)
         self.label_8.setText(str(hargaPaket))
 
@@ -389,8 +389,8 @@ class modulKonfirmasiPembayaran(QDialog):
             jumlahUang = 0
 
         if(int(jumlahUang) >= int(hargaPaket)):
-            print("jumlah CV adalah " + str(jumlahCV))
-            print("durasi paket adalah " + str(durasiPaket))
+            print("jumlah CV adalah " + jumlahCV)
+            print("durasi paket adalah " + durasiPaket)
             print("metode pembayaran adalah " + str(metodePembayaran))
             print("jumlah uang pengguna tersedia adalah " + str(jumlahUang))
             print("jumlah harga paket adalah " + str(hargaPaket))
@@ -681,9 +681,9 @@ class detailPaket(QDialog):
 
         self.LPaket.setText("Paket " + str(paket))
 
-        self.LDurasi.setText(str(durasi) + " Hari")
+        self.LDurasi.setText(durasi + " Hari")
 
-        self.LJumlah.setText(str(cv))
+        self.LJumlah.setText(cv)
 
         self.LHarga.setText("Rp. " + str(harga))
 
