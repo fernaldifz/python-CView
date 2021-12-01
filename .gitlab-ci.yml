@@ -8,13 +8,13 @@ before_script:
   - pip install -r requirements.txt
 # different stages in the pipeline
 stages:
+  - Static Analysis
   - Test
-  # - Test
 #defines the job in Static Analysis
-# pylint:
-#   stage: Static Analysis
-#   script:
-#   - pylint -d C0301 src/main.py
+pylint:
+  stage: Static Analysis
+  script:
+  - pylint -d C0301 src/main.py
 
 pytest:
   stage: Test
