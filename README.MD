@@ -25,7 +25,10 @@ Berikut merupakan daftar modul yang diimplementasi:
 ![Modul Metode Pembayaran](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/metodePembayaranInterface.png)
 ![Modul Konfirmasi Pembayaran](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/konfirmasiPembayaranInterface.png)
 - Laporan Pemesanan (18219085 - Muhammad Ilyas Irfan Syiraaj)
-- (((Masukkan Capture Screen)))
+![Modul Laporan Pemesanan](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/laporanPemesananInterface.PNG)
+![Modul Laporan Pemesanan - Detail Paket](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/detailPaketInterface.PNG)
+![Modul Laporan Pemesanan - Detail CV](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/detailCVInterface.PNG)
+![Modul Laporan Pemesanan - Detail Pembayaran](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/detailPembayaranInterface.PNG)
 
 ## Daftar Tabel Basis Data yang Diimplementasi
 Berikut merupakan daftar tabel basis data yang diimplementasi:
