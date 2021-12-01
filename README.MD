@@ -15,7 +15,7 @@ python main.py
 ```
 ## Daftar Modul yang Diimplementasi
 Berikut merupakan daftar modul yang diimplementasi:
-- Paket (18219035 - Muhammad Raflie Dwi Putra)
+- Paket Selection (18219035 - Muhammad Raflie Dwi Putra)
 ![Modul Pilih Paket](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/pilihPaket_Interface.png)
 ![Modul Pilih Paket - Page Success Notification](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/raw/main/doc/pilihPaketBerhasil_Interface.png)
 - CV Uploader (18219067 - Muhammad Fahrel Naufal A.)
