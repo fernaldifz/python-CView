@@ -20,7 +20,8 @@ Berikut merupakan daftar modul yang diimplementasi:
 - CV Uploader (18219067 - Muhammad Fahrel Naufal A.)
 - (((Masukkan Capture Screen)))
 - Pembayaran (18219099 - Fernaldi Fauzie)
-- (((Masukkan Capture Screen)))
+![Modul Metode Pembayaran](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/blob/main/doc/metodePembayaranInterface.png)
+![Modul Konfirmasi Pembayaran](https://gitlab.informatika.org/wpo9nine/if3152-2021-g12-cview/-/blob/main/doc/konfirmasiPembayaranInterface.png)
 - Laporan Pemesanan (18219085 - Muhammad Ilyas Irfan Syiraaj)
 - (((Masukkan Capture Screen)))
 
