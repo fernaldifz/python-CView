@@ -148,11 +148,8 @@ def test_paket_fieldNotFilled3(qtbot):
 def test_paket_success(qtbot):
     paket = cview.pilihPaket()
     qtbot.addWidget(paket)
-    paket.JumlahCVcomboBox.clear()
-    paket.durasicomboBox.clear()
     cv = "1"
     durasi = "3"
-    harga = 70000
     conn = sqlite3.connect("database.db")
     cur = conn.cursor()
     cur.execute('UPDATE Tuteers SET isActive = 1 WHERE username = "ff"')
@@ -160,9 +157,9 @@ def test_paket_success(qtbot):
     conn.close()
     qtbot.keyClicks(paket.JumlahCVcomboBox, cv)
     qtbot.keyClicks(paket.durasicomboBox, durasi)
-    paket.postData(cv, durasi, harga)
+    assert paket.lcdNumber.intValue() == 70000
     qtbot.mouseClick(paket.konfirmasiButton, Qt.LeftButton)
-    # dilakukan karena tidak mengetahui syntax yang tepat di PyTest untuk upload ComboBox Button supaya berhasil terupload datanya ke database
+
 
 def test_paket_back_to_dashboard(qtbot):
     batalPaket = cview.pilihPaket()
